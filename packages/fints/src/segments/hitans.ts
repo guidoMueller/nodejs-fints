@@ -16,19 +16,21 @@ export class HITANSProps {
 export class HITANS extends SegmentClass(HITANSProps) {
     public type = "HITANS";
 
-    protected serialize(): string[][] { throw new Error("Not implemented."); }
+    protected serialize(): string[][] {
+        throw new Error("Not implemented.");
+    }
 
     protected deserialize(input: string[][]) {
         if (![1, 2, 3, 4, 5, 6].includes(this.version)) {
             throw new Error(`Unimplemented TAN method version ${this.version} encountered.`);
         }
         const [
-            [ maxRequests ],
-            [ minSignatures ],
-            [ securityClass ],
+            [maxRequests],
+            [minSignatures],
+            [securityClass],
             args,
         ] = input;
-        const [ oneStepAllowed, multiple, securityProfile, ...restArgs ] = args;
+        const [oneStepAllowed, multiple, securityProfile, ...restArgs] = args;
         let tanMethodArgs: string[];
         if (this.version === 1) {
             tanMethodArgs = restArgs.slice(1);

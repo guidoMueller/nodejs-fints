@@ -1,6 +1,6 @@
 import "isomorphic-fetch";
 import { verbose } from "./logger";
-import { encodeBase64, decodeBase64 } from "./utils";
+import { decodeBase64, encodeBase64 } from "./utils";
 import { Request } from "./request";
 import { Response } from "./response";
 import { Connection } from "./types";
@@ -29,21 +29,27 @@ export class HttpConnection extends ConnectionConfig implements Connection {
     }
 
     public async send(request: Request): Promise<Response> {
-        const { url } = this;
+        const {url} = this;
         console.log(`Sending Request: ${request}`);
         verbose(`Sending Request: ${request}`);
-        if (this.debug) { verbose(`Parsed Request:\n${request.debugString}`); }
+        if (this.debug) {
+            verbose(`Parsed Request:\n${request.debugString}`);
+        }
         const httpRequest = await fetch(url, {
             method: "POST",
             body: encodeBase64(String(request)),
         });
-        if (!httpRequest.ok) { throw new Error(`Received bad status code ${httpRequest.status} from FinTS endpoint.`); }
+        if (!httpRequest.ok) {
+            throw new Error(`Received bad status code ${httpRequest.status} from FinTS endpoint.`);
+        }
 
         const responseString = decodeBase64(await httpRequest.text());
         console.log(`Received Response: ${responseString}`);
         verbose(`Received Response: ${responseString}`);
         const response = new Response(responseString);
-        if (this.debug) { verbose(`Parsed Response:\n${response.debugString}`); }
+        if (this.debug) {
+            verbose(`Parsed Response:\n${response.debugString}`);
+        }
         return response;
     }
 }

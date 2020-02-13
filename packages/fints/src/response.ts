@@ -1,4 +1,4 @@
-import { Segment, HIRMS, HITANS, HNHBK, HIBPA, HISYN, HIRMG, HNVSD, HISPAS } from "./segments";
+import { HIBPA, HIRMG, HIRMS, HISPAS, HISYN, HITANS, HNHBK, HNVSD, Segment } from "./segments";
 import { Constructable } from "./types";
 import { ReturnValue } from "./return-value";
 import { Request } from "./request";
@@ -23,39 +23,6 @@ export class Response {
     }
 
     /**
-     * Find all segments with the specified segment class.
-     *
-     * @param segmentClass A segment's class. The response should be searched for all segments with a matching type.
-     *
-     * @return An array of all matching segments. Can be empty if no segements matched the specified type.
-     */
-    public findSegments<T extends Segment<any>>(segmentClass: Constructable<T>): T[] {
-        const matchingStrings = this.segmentStrings.filter(str => str[0][0] === segmentClass.name);
-        return matchingStrings.map(segmentString => {
-            const segment = new segmentClass(segmentString);
-            if (segment.type !== segmentClass.name) {
-                throw new Error(
-                    `Consistency check failed. Deserializing ${segmentClass.name} returned ${segment.type}.`,
-                );
-            }
-            return segment;
-        });
-
-    }
-
-    /**
-     * Find the first segment with the specified segment class.
-     *
-     * @param segmentClass A segment's class. The response should be searched for a segments with a matching type.
-     *
-     * @return The deserialized matching segment. Can be `undefined` if no segement matched the specified type.
-     */
-    public findSegment<T extends Segment<any>>(segmentClass: Constructable<T>): T {
-        const segments = this.findSegments(segmentClass);
-        return segments[0];
-    }
-
-    /**
      * Will be true if the request this response references was a success and no errors were found.
      * Responses containing warnings will always be treated as being successfully.
      */
@@ -68,8 +35,8 @@ export class Response {
      */
     public get errors() {
         return Array.from(this.returnValues().values())
-            .filter(value => value.error)
-            .map(value => `${value.code} ${value.message}`);
+                .filter(value => value.error)
+                .map(value => `${value.code} ${value.message}`);
     }
 
     /**
@@ -90,7 +57,9 @@ export class Response {
      */
     public get bankName() {
         const segment = this.findSegment(HIBPA);
-        if (segment) { return segment.bankName; }
+        if (segment) {
+            return segment.bankName;
+        }
     }
 
     /**
@@ -99,26 +68,10 @@ export class Response {
      */
     public get systemId() {
         const segment = this.findSegment(HISYN);
-        if (!segment) { throw new Error("Invalid response. Could not find system id."); }
+        if (!segment) {
+            throw new Error("Invalid response. Could not find system id.");
+        }
         return segment.systemId;
-    }
-
-    /**
-     * Will return a set of return values from either only HIRMG or HIRMS segments or both.
-     * A return value is a set of a return code identifying it as well as a human readable message.
-     *
-     * @param segmentClasses Either HIRMG, HIRMS or both. Denotes which segment's return values should be processed.
-     *
-     * @return A map of (code -> return value).
-     */
-    public returnValues(...segmentClasses: (Constructable<HIRMG | HIRMS>)[]): Map<string, ReturnValue> {
-        const classes = segmentClasses.length === 0 ? [HIRMG, HIRMS] : segmentClasses;
-        return classes.reduce((result, currentClass) => {
-            const segment = this.findSegment(currentClass);
-            if (!segment) { return result; }
-            segment.returnValues.forEach((value, key) => result.set(key, value));
-            return result;
-        }, new Map());
     }
 
     /**
@@ -143,6 +96,76 @@ export class Response {
      */
     public get painFormats(): string[] {
         return this.findSegment(HISPAS).painFormats;
+    }
+
+    /**
+     * Generate a textual representation for debug purposes.
+     */
+    public get debugString() {
+        return this.segmentStrings.map(segmentString => {
+            const split = segmentString;
+            return `Type: ${split[0][0]}\n` +
+                   `Version: ${split[0][2]}\n` +
+                   `Segment Number: ${split[0][1]}\n` +
+                   `Referencing: ${split[0].length <= 3 ? "None" : split[0][3]}\n` +
+                   `----\n` +
+                   split.slice(1).reduce((result, group, index) => {
+                       return result + `DG ${index}: ${Array.isArray(group) ? group.join(", ") : group}\n`;
+                   }, "");
+        }).join("\n");
+    }
+
+    /**
+     * Find all segments with the specified segment class.
+     *
+     * @param segmentClass A segment's class. The response should be searched for all segments with a matching type.
+     *
+     * @return An array of all matching segments. Can be empty if no segements matched the specified type.
+     */
+    public findSegments<T extends Segment<any>>(segmentClass: Constructable<T>): T[] {
+        const matchingStrings = this.segmentStrings.filter(str => str[0][0] === segmentClass.name);
+        return matchingStrings.map(segmentString => {
+            const segment = new segmentClass(segmentString);
+            if (segment.type !== segmentClass.name) {
+                throw new Error(
+                        `Consistency check failed. Deserializing ${segmentClass.name} returned ${segment.type}.`,
+                );
+            }
+            return segment;
+        });
+
+    }
+
+    /**
+     * Find the first segment with the specified segment class.
+     *
+     * @param segmentClass A segment's class. The response should be searched for a segments with a matching type.
+     *
+     * @return The deserialized matching segment. Can be `undefined` if no segement matched the specified type.
+     */
+    public findSegment<T extends Segment<any>>(segmentClass: Constructable<T>): T {
+        const segments = this.findSegments(segmentClass);
+        return segments[0];
+    }
+
+    /**
+     * Will return a set of return values from either only HIRMG or HIRMS segments or both.
+     * A return value is a set of a return code identifying it as well as a human readable message.
+     *
+     * @param segmentClasses Either HIRMG, HIRMS or both. Denotes which segment's return values should be processed.
+     *
+     * @return A map of (code -> return value).
+     */
+    public returnValues(...segmentClasses: (Constructable<HIRMG | HIRMS>)[]): Map<string, ReturnValue> {
+        const classes = segmentClasses.length === 0 ? [HIRMG, HIRMS] : segmentClasses;
+        return classes.reduce((result, currentClass) => {
+            const segment = this.findSegment(currentClass);
+            if (!segment) {
+                return result;
+            }
+            segment.returnValues.forEach((value, key) => result.set(key, value));
+            return result;
+        }, new Map());
     }
 
     /**
@@ -189,22 +212,5 @@ export class Response {
      */
     public segmentMaxVersion(segment: Constructable<Segment<any>>) {
         return this.findSegments(segment).reduce((max, current) => current.version > max ? current.version : max, 0);
-    }
-
-    /**
-     * Generate a textual representation for debug purposes.
-     */
-    public get debugString() {
-        return this.segmentStrings.map(segmentString => {
-            const split = segmentString;
-            return `Type: ${split[0][0]}\n` +
-                `Version: ${split[0][2]}\n` +
-                `Segment Number: ${split[0][1]}\n` +
-                `Referencing: ${split[0].length <= 3 ? "None" : split[0][3]}\n` +
-                `----\n` +
-                split.slice(1).reduce((result, group, index) => {
-                    return result + `DG ${index}: ${Array.isArray(group) ? group.join(", ") : group}\n`;
-                }, "");
-        }).join("\n");
     }
 }

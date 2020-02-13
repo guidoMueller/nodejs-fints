@@ -9,5 +9,4 @@ export class ResponseError extends Error {
         this.response = response;
     }
 
-    
 }

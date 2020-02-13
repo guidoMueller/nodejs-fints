@@ -13,8 +13,10 @@ export class HKEND extends SegmentClass(HKENDProps) {
     }
 
     protected serialize() {
-        return [ this.dialogId ];
+        return [this.dialogId];
     }
 
-    protected deserialize() { throw new Error("Not implemented."); }
+    protected deserialize() {
+        throw new Error("Not implemented.");
+    }
 }

@@ -37,30 +37,30 @@ export interface PinTanClientConfig {
 
 export class PinTanClient extends Client {
     /**
-     * Connection used to reach the server.
-     */
-    private connection: Connection;
-    /**
      * Configuration for connecting and authenticating.
      */
     protected config: PinTanClientConfig;
+    /**
+     * Connection used to reach the server.
+     */
+    private connection: Connection;
 
     constructor(config: PinTanClientConfig) {
         super();
         this.config = config;
-        const { url, debug  } = config;
-        this.connection = new HttpConnection({ url, debug });
+        const {url, debug} = config;
+        this.connection = new HttpConnection({url, debug});
     }
 
-    public createDialog(dialogConfig?:DialogConfig) {
-        const { blz, name, pin, productId } = this.config;
-        const { connection } = this;
-        return new Dialog(dialogConfig?dialogConfig:{ blz, name, pin, systemId: "0", productId}, connection );
+    public createDialog(dialogConfig?: DialogConfig) {
+        const {blz, name, pin, productId} = this.config;
+        const {connection} = this;
+        return new Dialog(dialogConfig ? dialogConfig : {blz, name, pin, systemId: "0", productId}, connection);
     }
 
     public createRequest(dialog: Dialog, segments: Segment<any>[], tan?: string) {
-        const { blz, name, pin } = this.config;
-        const { systemId, dialogId, msgNo, tanMethods } = dialog;
-        return new Request({ blz, name, pin, systemId, dialogId, msgNo, segments, tanMethods, tan });
+        const {blz, name, pin} = this.config;
+        const {systemId, dialogId, msgNo, tanMethods} = dialog;
+        return new Request({blz, name, pin, systemId, dialogId, msgNo, segments, tanMethods, tan});
     }
 }

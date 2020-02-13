@@ -2,10 +2,10 @@ import { SegmentClass } from "./segment";
 import { StandingOrder } from "../types";
 import { Parse } from "../parse";
 import {
-    document,
-    PaymentInstructionInformationSCT,
     CreditTransferTransactionInformationSCT,
     CustomerCreditTransferInitiationV03,
+    document,
+    PaymentInstructionInformationSCT,
 } from "../pain-formats";
 
 export class HICDBProps {
@@ -20,15 +20,17 @@ export class HICDBProps {
 export class HICDB extends SegmentClass(HICDBProps) {
     public type = "HICDB";
 
-    protected serialize(): string[][] { throw new Error("Not implemented."); }
+    protected serialize(): string[][] {
+        throw new Error("Not implemented.");
+    }
 
     protected deserialize(input: string[][]) {
         const [
             [],
             [],
-            [ sepaMessage ],
+            [sepaMessage],
             [],
-            [ nextOrder, timeUnit, interval, orderDay, lastOrder ],
+            [nextOrder, timeUnit, interval, orderDay, lastOrder],
         ] = input;
 
         const parsed: unknown = Parse.xml(sepaMessage);
@@ -39,11 +41,11 @@ export class HICDB extends SegmentClass(HICDBProps) {
 
         const jsonMessage: CustomerCreditTransferInitiationV03 = parsed.Document.CstmrCdtTrfInitn;
         const instructionInfo: PaymentInstructionInformationSCT = Array.isArray(jsonMessage.PmtInf)
-            ? jsonMessage.PmtInf[0]
-            : jsonMessage.PmtInf as PaymentInstructionInformationSCT;
+                ? jsonMessage.PmtInf[0]
+                : jsonMessage.PmtInf as PaymentInstructionInformationSCT;
         const creditTransaction: CreditTransferTransactionInformationSCT = Array.isArray(instructionInfo.CdtTrfTxInf)
-            ? instructionInfo.CdtTrfTxInf[0]
-            : instructionInfo.CdtTrfTxInf as CreditTransferTransactionInformationSCT;
+                ? instructionInfo.CdtTrfTxInf[0]
+                : instructionInfo.CdtTrfTxInf as CreditTransferTransactionInformationSCT;
 
         this.standingOrder = {
             nextOrderDate: Parse.date(nextOrder),
@@ -69,7 +71,7 @@ export class HICDB extends SegmentClass(HICDBProps) {
 
     private isDocument(d: any): d is document {
         return typeof d !== "undefined"
-            && typeof d.Document !== "undefined"
-            && typeof d.Document.CstmrCdtTrfInitn !== "undefined";
+               && typeof d.Document !== "undefined"
+               && typeof d.Document.CstmrCdtTrfInitn !== "undefined";
     }
 }

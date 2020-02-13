@@ -29,13 +29,21 @@ export class ReturnValue {
     /**
      * Will be `true` if the return value was a successful one (code starts with "0").
      */
-    public get success() { return String(this.code).startsWith("0"); }
+    public get success() {
+        return String(this.code).startsWith("0");
+    }
+
     /**
      * Will be `true` if the return value was warning (code starts with "3").
      */
-    public get warning() { return String(this.code).startsWith("3"); }
+    public get warning() {
+        return String(this.code).startsWith("3");
+    }
+
     /**
      * Will be `true` if the return value was an error (code starts with "9").
      */
-    public get error() { return String(this.code).startsWith("9"); }
+    public get error() {
+        return String(this.code).startsWith("9");
+    }
 }

@@ -93,9 +93,6 @@ Example Application with nodejs middleware and web application for view banking 
 
 - [DEMO](https://cf-banking-fints-example.cfapps.eu10.hana.ondemand.com/)
 
-###IOS Application work with the nodejs application
-- [IOS Application](https://apps.apple.com/us/app/unibanking/id1469203913)
-
 
 ## Features
 
@@ -117,6 +114,5 @@ Example Application with nodejs middleware and web application for view banking 
 
 - [cf-banking-fints-example](https://github.com/guidoMueller/cf-banking-fints-example)
 - [Demo Ui Application](https://cf-banking-fints-example.cfapps.eu10.hana.ondemand.com/)
-- [IOS Application](https://apps.apple.com/us/app/unibanking/id1469203913)
 - [Official specification](https://www.hbci-zka.de/spec/3_0.htm)
 - [Database of banks with their URLs](https://github.com/jhermsmeier/fints-institute-db)

@@ -30,15 +30,15 @@ export class HNVSD extends SegmentClass(HNVSDProps) {
     protected serialize() {
         return [
             Format.stringWithLength(
-                this.segments
-                    .map(segment => String(segment))
-                    .join(""),
+                    this.segments
+                            .map(segment => String(segment))
+                            .join(""),
             ),
         ];
     }
 
     protected deserialize(input: string[][]) {
-        const [ [ content ] ] = input;
+        const [[content]] = input;
         this.rawSegments = parse(content);
     }
 }

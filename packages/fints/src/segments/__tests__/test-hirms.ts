@@ -10,15 +10,15 @@ testSegment(HIRMS, [
             version: 2,
             reference: 4,
             returnValues: new Map<string, any>([
-                [
-                    "0010", {
-                        code: "0010",
-                        message: "Auftrag entgegengenommen",
-                        parameters: [],
-                        references: [],
-                    },
-                ],
-            ]),
+                                                   [
+                                                       "0010", {
+                                                       code: "0010",
+                                                       message: "Auftrag entgegengenommen",
+                                                       parameters: [],
+                                                       references: [],
+                                                   },
+                                                   ],
+                                               ]),
         },
     },
 ], "in");

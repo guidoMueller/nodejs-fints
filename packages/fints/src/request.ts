@@ -1,4 +1,4 @@
-import { Segment, HNSHK, HNVSK, HNVSD, HNSHA, HNHBS, HNHBK } from "./segments";
+import { HNHBK, HNHBS, HNSHA, HNSHK, HNVSD, HNVSK, Segment } from "./segments";
 import { TanMethod } from "./tan-method";
 import { HEADER_LENGTH } from "./constants";
 
@@ -67,6 +67,13 @@ export class Request extends RequestConfig {
     }
 
     /**
+     * Generate a textual representation for debug purposes.
+     */
+    public get debugString(): string {
+        return this.segments.map(segment => segment.debugString).join("\n");
+    }
+
+    /**
      * Determines if a TAN method with a "999" security function is available.
      * This determines whether profile version 2 can be used.
      */
@@ -119,34 +126,27 @@ export class Request extends RequestConfig {
             securityFunction,
         } = this;
         const segmentsWithoutHeader = [
-            new HNVSK({ segNo: 998, blz, name, systemId, profileVersion }),
+            new HNVSK({segNo: 998, blz, name, systemId, profileVersion}),
             new HNVSD({
-                segNo: 999,
-                segments: [
-                    new HNSHK({ segNo: 2, secRef, blz, name, systemId, profileVersion, securityFunction }),
-                    ...this.segments,
-                    new HNSHA({ segNo: segmentCount, secRef, pin, tan }),
-                ],
-            }),
+                          segNo: 999,
+                          segments: [
+                              new HNSHK({segNo: 2, secRef, blz, name, systemId, profileVersion, securityFunction}),
+                              ...this.segments,
+                              new HNSHA({segNo: segmentCount, secRef, pin, tan}),
+                          ],
+                      }),
             // Add `1` to the index because of HNSHA.
-            new HNHBS({ segNo: segmentCount + 1, msgNo }),
+            new HNHBS({segNo: segmentCount + 1, msgNo}),
         ];
         let length =
-            segmentsWithoutHeader.reduce((result, segment) => result + String(segment).length, 0) +
-            HEADER_LENGTH +
-            dialogId.length +
-            String(msgNo).length;
+                segmentsWithoutHeader.reduce((result, segment) => result + String(segment).length, 0) +
+                HEADER_LENGTH +
+                dialogId.length +
+                String(msgNo).length;
         return [
-            new HNHBK({ segNo: 1, msgLength: length, dialogId, msgNo }),
+            new HNHBK({segNo: 1, msgLength: length, dialogId, msgNo}),
             ...segmentsWithoutHeader,
         ];
-    }
-
-    /**
-     * Generate a textual representation for debug purposes.
-     */
-    public get debugString(): string {
-        return this.segments.map(segment => segment.debugString).join("\n");
     }
 
     /**
@@ -154,7 +154,7 @@ export class Request extends RequestConfig {
      */
     public toString() {
         return this.fullSegments
-            .map(segment => String(segment))
-            .join("");
+                .map(segment => String(segment))
+                .join("");
     }
 }

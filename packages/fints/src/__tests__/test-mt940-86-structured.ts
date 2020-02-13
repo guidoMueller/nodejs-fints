@@ -23,7 +23,7 @@ const testData = [
         parsed: {
             bic: "10020030",
             iban: "234567",
-            reference: { raw: "Miete November" },
+            reference: {raw: "Miete November"},
             name: "MUELLER",
             text: "DAUERAUFTRAG",
             primaNota: "0599",
@@ -34,7 +34,7 @@ const testData = [
         parsed: {
             bic: "50060400",
             iban: "0847564700",
-            reference: { raw: "Gehalt Oktober\nFirma Mustermann GmbH" },
+            reference: {raw: "Gehalt Oktober\nFirma Mustermann GmbH"},
             name: "MUELLER",
             text: "UEBERWEISUNG",
             primaNota: "0599",
@@ -63,7 +63,7 @@ const testData = [
 ];
 
 describe("parse86Structured", () => {
-    testData.forEach(({ str, parsed }, index) => {
+    testData.forEach(({str, parsed}, index) => {
         test(`Parsing the 86 section of MT940 data, test data set ${index}`, () => {
             expect(parse86Structured(str)).toEqual(parsed);
         });
@@ -71,7 +71,7 @@ describe("parse86Structured", () => {
 });
 
 describe("is86Structured", () => {
-    testData.forEach(({ str }, index) => {
+    testData.forEach(({str}, index) => {
         test(`detectes test data set ${index} as valid`, () => {
             expect(is86Structured(str)).toBe(true);
         });

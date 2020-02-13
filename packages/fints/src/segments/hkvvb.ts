@@ -22,7 +22,7 @@ export class HKVVB extends SegmentClass(HKVVBProps) {
     }
 
     protected serialize() {
-        const { lang, productId } = this;
+        const {lang, productId} = this;
         return [
             Format.num(0),
             Format.num(0),
@@ -32,5 +32,7 @@ export class HKVVB extends SegmentClass(HKVVBProps) {
         ];
     }
 
-    protected deserialize() { throw new Error("Not implemented."); }
+    protected deserialize() {
+        throw new Error("Not implemented.");
+    }
 }

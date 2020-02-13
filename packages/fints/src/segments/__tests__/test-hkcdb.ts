@@ -11,7 +11,7 @@ testSegment(HKCDB, [
             type: "HKSAL",
             segNo: 3,
             version: 1,
-            account: { iban, bic },
+            account: {iban, bic},
             painFormats: ["urn:iso:std:iso:20022:tech:xsd:pain.001.001.03"],
             touchdown: "8",
         },

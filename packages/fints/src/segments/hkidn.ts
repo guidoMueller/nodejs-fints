@@ -24,7 +24,7 @@ export class HKIDN extends SegmentClass(HKIDNProps) {
     }
 
     protected serialize() {
-        const { blz, name, systemId, customerId } = this;
+        const {blz, name, systemId, customerId} = this;
         return [
             [Format.num(COUNTRY_CODE), blz],
             Format.stringEscaped(name),
@@ -33,5 +33,7 @@ export class HKIDN extends SegmentClass(HKIDNProps) {
         ];
     }
 
-    protected deserialize() { throw new Error("Not implemented."); }
+    protected deserialize() {
+        throw new Error("Not implemented.");
+    }
 }

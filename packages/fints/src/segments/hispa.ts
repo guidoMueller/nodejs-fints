@@ -13,10 +13,12 @@ export class HISPAProps {
 export class HISPA extends SegmentClass(HISPAProps) {
     public type = "HISPA";
 
-    protected serialize(): string[][] { throw new Error("Not implemented."); }
+    protected serialize(): string[][] {
+        throw new Error("Not implemented.");
+    }
 
     protected deserialize(input: string[][]) {
-        this.accounts = input.map(([ hasSepa, iban, bic, accountNumber, subAccount, countryCode, blz ]) => ({
+        this.accounts = input.map(([hasSepa, iban, bic, accountNumber, subAccount, countryCode, blz]) => ({
             iban, bic, accountNumber, subAccount, blz,
         }));
     }

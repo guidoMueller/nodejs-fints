@@ -87,9 +87,9 @@ describe("parse", () => {
         },
         {
             str: "HIRMG:2:2+" +
-                "0010::Nachricht entgegengenommen.+" +
-                "3020::Noch eine Nachricht.:1:2:3+" +
-                "9030::Ein Fehler ist aufgetreten.'",
+                 "0010::Nachricht entgegengenommen.+" +
+                 "3020::Noch eine Nachricht.:1:2:3+" +
+                 "9030::Ein Fehler ist aufgetreten.'",
             segments: [
                 [
                     ["HIRMG", "2", "2"],
@@ -101,7 +101,7 @@ describe("parse", () => {
         },
     ];
 
-    testData.forEach(({ str, segments }) => {
+    testData.forEach(({str, segments}) => {
         test(str, () => expect(parse(str)).toEqual(segments));
     });
 });

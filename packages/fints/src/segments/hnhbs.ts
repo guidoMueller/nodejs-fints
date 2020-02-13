@@ -18,8 +18,10 @@ export class HNHBS extends SegmentClass(HNHBSProps) {
     }
 
     protected serialize() {
-        return [ Format.num(this.msgNo) ];
+        return [Format.num(this.msgNo)];
     }
 
-    protected deserialize() { throw new Error("Not implemented."); }
+    protected deserialize() {
+        throw new Error("Not implemented.");
+    }
 }

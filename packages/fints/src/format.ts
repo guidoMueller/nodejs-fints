@@ -23,7 +23,9 @@ export const Format = {
      *
      * @return The formatted string.
      */
-    stringWithLength(str: string) { return `@${str.length}@${str}`; },
+    stringWithLength(str: string) {
+        return `@${str.length}@${str}`;
+    },
     /**
      * Format a boolean with no `false` representation.
      *
@@ -31,7 +33,9 @@ export const Format = {
      *
      * @return The formatted string.
      */
-    bool(value: boolean) { return value ? "J" : ""; },
+    bool(value: boolean) {
+        return value ? "J" : "";
+    },
     /**
      * Return the SEPA identification descriptor.
      *
@@ -47,7 +51,9 @@ export const Format = {
      *
      * @return The formatted string.
      */
-    num(num: number): string { return `${num}`.replace(/\./, ","); },
+    num(num: number): string {
+        return `${num}`.replace(/\./, ",");
+    },
     /**
      * Format a normal string, escaping all control characters.
      *
@@ -56,7 +62,9 @@ export const Format = {
      * @return The formatted string.
      */
     stringEscaped(str: string) {
-        if (!str) { return ""; }
+        if (!str) {
+            return "";
+        }
         return escapeFinTS(str);
     },
     /**
@@ -66,7 +74,9 @@ export const Format = {
      *
      * @return The formatted string.
      */
-    dig(num: number) { return leftPad(String(num), 12); },
+    dig(num: number) {
+        return leftPad(String(num), 12);
+    },
     /**
      * Format a time. The date part is ignored.
      *
@@ -83,7 +93,9 @@ export const Format = {
      *
      * @return An empty string.
      */
-    empty() { return ""; },
+    empty() {
+        return "";
+    },
     /**
      * Format a boolean with an explicit `false` representation (named "JN" in the official documentation).
      *
@@ -91,5 +103,7 @@ export const Format = {
      *
      * @return The formatted string.
      */
-    jn(bool: boolean) { return bool ? "J" : "N"; },
+    jn(bool: boolean) {
+        return bool ? "J" : "N";
+    },
 };

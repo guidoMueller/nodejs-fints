@@ -13,10 +13,12 @@ export class HIKAZProps {
 export class HIKAZ extends SegmentClass(HIKAZProps) {
     public type = "HIKAZ";
 
-    protected serialize(): string[][] { throw new Error("Not implemented."); }
+    protected serialize(): string[][] {
+        throw new Error("Not implemented.");
+    }
 
     protected deserialize(input: string[][]) {
-        const [ bookedTransactions, pendingTransactions ] = input;
+        const [bookedTransactions, pendingTransactions] = input;
         if (pendingTransactions && pendingTransactions[0]) {
             this.pendingTransactions = pendingTransactions[0];
         }

@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { readFileSync } from "fs";
 import * as fetchMock from "fetch-mock";
 import { PinTanClient } from "../pin-tan-client";
-import { encodeBase64, decodeBase64 } from "../utils";
+import { decodeBase64, encodeBase64 } from "../utils";
 import { Format } from "../format";
 
 const url = "https://example.com/fints";
@@ -17,7 +17,7 @@ beforeEach(() => {
     jest.spyOn(Format, "date").mockImplementation(date => date ? format(date, "HHMMss") : "20180101");
     jest.spyOn(Format, "time").mockImplementation(time => time ? format(time, "HHMMss") : "120000");
     jest.spyOn(Math, "random").mockReturnValue(0.5);
-    client = new PinTanClient({ blz, name, pin, url, productId });
+    client = new PinTanClient({blz, name, pin, url, productId});
 });
 
 test("accounts", async () => {

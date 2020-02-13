@@ -27,12 +27,17 @@
     "main": "dist/index.js",
     "repository": {
         "type": "git",
-        "url": "https://github.com/mathiasarens/nodejs-fints.git",
+        "url": "https://github.com/guidoMueller/nodejs-fints.git",
         "directory": "packages/fints"
     },
     "typings": "dist/index.d.ts",
     "author": "Guido Müller",
     "contributors": [
+        {
+            "name": "Guido Müller",
+            "email": "g.mueller@x-loco.de",
+            "url": "https://github.com/guidoMueller"
+        },
         {
             "name": "Mathias Arens",
             "email": "github@mathiasarens.de",

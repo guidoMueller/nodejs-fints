@@ -18,8 +18,8 @@ export class HKCDB extends SegmentClass(HKCDBProps) {
     public type = "HKCDB";
 
     protected serialize() {
-        const { account, touchdown, painFormats } = this;
-        const { iban, bic } = account;
+        const {account, touchdown, painFormats} = this;
+        const {iban, bic} = account;
         const pain0101: string = painFormats.find(x => x.startsWith("urn") && x.indexOf("pain.001.001.03") !== -1);
         const pain0103: string = painFormats.find(x => x.startsWith("urn") && x.indexOf("pain.001.003.03") !== -1);
         return [
@@ -31,5 +31,7 @@ export class HKCDB extends SegmentClass(HKCDBProps) {
         ];
     }
 
-    protected deserialize() { throw new Error("Not implemented."); }
+    protected deserialize() {
+        throw new Error("Not implemented.");
+    }
 }

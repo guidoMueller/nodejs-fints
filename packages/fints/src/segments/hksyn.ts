@@ -20,8 +20,10 @@ export class HKSYN extends SegmentClass(HKSYNProps) {
     }
 
     protected serialize() {
-        return [ Format.num(this.mode) ];
+        return [Format.num(this.mode)];
     }
 
-    protected deserialize() { throw new Error("Not implemented."); }
+    protected deserialize() {
+        throw new Error("Not implemented.");
+    }
 }

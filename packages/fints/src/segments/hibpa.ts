@@ -23,14 +23,16 @@ export class HIBPA extends SegmentClass(HIBPAProps) {
         this.version = 3;
     }
 
-    protected serialize(): string[][] { throw new Error("Not implemented."); }
+    protected serialize(): string[][] {
+        throw new Error("Not implemented.");
+    }
 
     protected deserialize(input: string[][]) {
         const [
-            [ bpdVersion ],
-            [ countryCode, blz ],
-            [ bankName ],
-            [ transactionTypeCount ],
+            [bpdVersion],
+            [countryCode, blz],
+            [bankName],
+            [transactionTypeCount],
             supportedLanguages,
             supportedHbciVersions,
         ] = input;

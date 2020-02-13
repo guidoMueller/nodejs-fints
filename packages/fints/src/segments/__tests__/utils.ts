@@ -9,7 +9,7 @@ export type Direction = "bi" | "in" | "out";
 
 export function testSegment(segmentClass: Constructable<any>, testData: TestData[], direction: Direction = "bi") {
     describe(`Segment "${segmentClass.name}"`, () => {
-        testData.forEach(({ serialized, structured }, index) => {
+        testData.forEach(({serialized, structured}, index) => {
             test("has correct type", () => {
                 const segment = new segmentClass({});
                 expect(segment.type).toBe(segmentClass.name);

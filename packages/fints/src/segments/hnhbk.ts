@@ -26,7 +26,7 @@ export class HNHBK extends SegmentClass(HNHBKProps) {
     }
 
     protected serialize() {
-        const { msgLength, dialogId, msgNo, refMsg } = this;
+        const {msgLength, dialogId, msgNo, refMsg} = this;
         const result: (string | string[])[] = [
             Format.dig(msgLength),
             Format.num(HBCI_VERSION),
@@ -34,13 +34,13 @@ export class HNHBK extends SegmentClass(HNHBKProps) {
             Format.num(msgNo),
         ];
         if (refMsg) {
-            result.push([ refMsg.dialogId, String(refMsg.msgNo) ]);
+            result.push([refMsg.dialogId, String(refMsg.msgNo)]);
         }
         return result;
     }
 
     protected deserialize(input: string[][]) {
-        const [ [msgLength], [hbciVersion], [dialogId], [msgNo], refMsg ] = input;
+        const [[msgLength], [hbciVersion], [dialogId], [msgNo], refMsg] = input;
         if (hbciVersion !== "300") {
             throw new Error(`Version mismatch. Server is using HBCI version ${hbciVersion}.`);
         }

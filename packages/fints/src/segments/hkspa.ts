@@ -8,6 +8,7 @@ export class HKSPAProps {
     public accNo?: number;
     public segNo: number;
 }
+
 /**
  * HKSPA (SEPA-Kontoverbindung anfordern)
  * Section C.10.1.3
@@ -20,7 +21,7 @@ export class HKSPA extends SegmentClass(HKSPAProps) {
     }
 
     protected serialize() {
-        const { accNo, subAccFeature, blz } = this;
+        const {accNo, subAccFeature, blz} = this;
         return accNo ? [
             Format.num(accNo),
             subAccFeature,
@@ -29,5 +30,7 @@ export class HKSPA extends SegmentClass(HKSPAProps) {
         ] : [];
     }
 
-    protected deserialize() { throw new Error("Not implemented."); }
+    protected deserialize() {
+        throw new Error("Not implemented.");
+    }
 }
