@@ -1,0 +1,52 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Jest Tests",
+            "cwd": "${workspaceFolder}",
+            "args": [
+              "--inspect-brk",
+              "${workspaceRoot}/node_modules/.bin/jest",
+              "--runInBand",
+              "--config",
+              "${workspaceRoot}/jest.config.json"
+            ],
+            "windows": {
+              "args": [
+                "--inspect-brk",
+                "${workspaceRoot}/node_modules/jest/bin/jest.js",
+                "--runInBand",
+                "--config",
+                "${workspaceRoot}/jest.config.json"          
+              ],
+            },
+            "env": {"TZ": "UTC"},
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+          },
+          {
+            "type": "node",
+            "request": "launch",
+            "name": "Single Jest Tests",
+            "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
+            "args": [
+                "--config",
+                "${workspaceRoot}/jest.config.json",
+                "-i",
+                "${relativeFile}",
+            ],
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "internalConsoleOptions": "openOnSessionStart",
+            "console": "integratedTerminal",
+            "outFiles": [
+                "${workspaceRoot}/dist"
+            ],
+            "env": {"TZ": "UTC"}
+        }
+    ]
+}

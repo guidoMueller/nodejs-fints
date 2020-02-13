@@ -69,9 +69,9 @@ export function parsePaymentReferenceTan(content: string) {
  * @return A parsed payment reference with all extracted data.
  */
 export function assemblePaymentReference(references: Section[]): PaymentReference {
-    let lastIdentifiedAttribute: keyof PaymentReference;
+    let lastIdentifiedAttribute: keyof Omit<PaymentReference, "date"|"tan">;
     const result: PaymentReference = { raw: "" };
-    const add = (name: keyof PaymentReference, content: string) => {
+    const add = (name: keyof Omit<PaymentReference, "date"|"tan">, content: string) => {
         lastIdentifiedAttribute = name;
         result[name] = content;
     };
@@ -89,6 +89,7 @@ export function assemblePaymentReference(references: Section[]): PaymentReferenc
             else if (content.startsWith("OAMT+")) { add("originalTurnover", content.substr(5)); }
             else if (content.startsWith("SVWZ+")) { add("text", content.substr(5)); }
             else if (content.startsWith("ABWA+")) { add("divergingPrincipal", content.substr(5)); }
+            else if (content.startsWith("PURP+")) { add("purpose", content.substr(5)); }
             else if (content.startsWith("BREF+")) { add("back", content.substr(5)); }
             else if (content.startsWith("RREF+")) { add("back", content.substr(5)); }
             else if (content.startsWith("DATUM ")) { result.date = parsePaymentReferenceDate(content); }

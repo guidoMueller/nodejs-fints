@@ -4,11 +4,13 @@
 
 A client library for communicating with [FinTS servers](https://www.hbci-zka.de/).
 
-Fork from npm [fints](https://github.com/Prior99/fints)
+Fork from [fints](https://github.com/Prior99/fints)
+
+Fork from [nodejs-fints](https://github.com/as19git67/nodejs-fints)
 
 ## Example
 
-###Typescript Example
+### Typescript Example
 ```typescript
 import { PinTanClient } from "node-fints";
 
@@ -29,7 +31,7 @@ const statements = await client.statements(accounts[0], startDate, endDate);
 console.info(statements); // List of all statements with transactions in specified date range.
 ```
 
-###JavaScript Example
+### JavaScript Example
 ```javascript
 function getAccountStatements( client, accounts, statements, callback ) {
   for ( let i in accounts ) {

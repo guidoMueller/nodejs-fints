@@ -1,14 +1,15 @@
 {
     "name": "node-fints",
-    "version": "0.3.5",
-    "description": "FinTS client library.",
+    "version": "0.5.1",
+    "description": "FinTS client library with psd2 support",
     "keywords": [
         "fints",
         "hbci",
         "banking",
         "api",
         "ios",
-        "nodejs"
+        "nodejs",
+        "node"
     ],
     "scripts": {
         "prebuild": "cxsd -t generated https://raw.githubusercontent.com/hbci4j/hbci4java/master/src/main/resources/pain.001.001.03.xsd",
@@ -24,9 +25,20 @@
         "README.md"
     ],
     "main": "dist/index.js",
-    "repository": "https://github.com/guidoMueller/nodejs-fints",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mathiasarens/nodejs-fints.git",
+        "directory": "packages/fints"
+    },
     "typings": "dist/index.d.ts",
     "author": "Guido Müller",
+    "contributors": [
+        {
+            "name": "Mathias Arens",
+            "email": "github@mathiasarens.de",
+            "url": "https://github.com/mathiasarens"
+        }
+    ],
     "license": "MIT",
     "jest": {
         "collectCoverage": true,
@@ -42,11 +54,13 @@
             "text-summary"
         ],
         "testMatch": [
-            "**/__tests__/test-*.ts"
+            "**/src/**/__tests__/test-*.ts"
         ],
         "globals": {
             "ts-jest": {
-                "enableTsDiagnostics": true,
+                "diagnostics": {
+                    "pathRegex": ".*test-.*\\.ts$"
+                },
                 "ignoreCoverageForDecorators": true,
                 "ignoreCoverageForAllDecorators": true
             }
@@ -61,29 +75,29 @@
     },
     "devDependencies": {
         "@types/date-fns": "^2.6.0",
-        "@types/fetch-mock": "^6.0.3",
+        "@types/fetch-mock": "^7.3.1",
         "@types/iconv-lite": "^0.0.1",
-        "@types/invariant": "^2.2.29",
-        "@types/isomorphic-fetch": "^0.0.34",
-        "@types/jest": "^23.3.1",
-        "@types/node": "^10.9.4",
+        "@types/invariant": "^2.2.30",
+        "@types/isomorphic-fetch": "^0.0.35",
+        "@types/jest": "^24.0.18",
+        "@types/node": "^13.1.4",
         "@types/winston": "^2.4.4",
         "cxsd": "^0.1.1",
-        "fetch-mock": "^7.0.0-alpha.6",
-        "jest": "^23.5.0",
-        "ts-jest": "^23.1.4",
-        "tslint": "^5.11.0",
-        "typedoc": "^0.12.0",
-        "typescript": "^3.0.3"
+        "fetch-mock": "^8.0.3",
+        "jest": "^24.9.0",
+        "ts-jest": "^24.2.0",
+        "tslint": "^5.20.0",
+        "typedoc": "^0.15.4",
+        "typescript": "^3.7.3"
     },
     "dependencies": {
         "bind-decorator": "^1.0.11",
-        "date-fns": "^1.29.0",
-        "fast-xml-parser": "^3.12.12",
-        "iconv-lite": "^0.4.24",
+        "date-fns": "^2.9.0",
+        "fast-xml-parser": "^3.15.1",
+        "iconv-lite": "^0.5.0",
         "invariant": "^2.2.4",
         "isomorphic-fetch": "^2.2.1",
         "mt940-js": "^0.6.0",
-        "winston": "^3.1.0"
+        "winston": "^3.2.1"
     }
 }

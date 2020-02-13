@@ -1,5 +1,5 @@
 import { Client } from "./client";
-import { Dialog } from "./dialog";
+import { Dialog, DialogConfig } from "./dialog";
 import { Request } from "./request";
 import { HttpConnection } from "./http-connection";
 import { Segment } from "./segments";
@@ -9,6 +9,10 @@ import { Connection } from "./types";
  * Set of options needed to construct a `PinTanClient`.
  */
 export interface PinTanClientConfig {
+    /**
+     * The fints product identification.
+     */
+    productId: string;
     /**
      * The banks identification number (Bankleitzahl).
      */
@@ -48,10 +52,10 @@ export class PinTanClient extends Client {
         this.connection = new HttpConnection({ url, debug });
     }
 
-    public createDialog() {
-        const { blz, name, pin } = this.config;
+    public createDialog(dialogConfig?:DialogConfig) {
+        const { blz, name, pin, productId } = this.config;
         const { connection } = this;
-        return new Dialog({ blz, name, pin, systemId: "0", connection });
+        return new Dialog(dialogConfig?dialogConfig:{ blz, name, pin, systemId: "0", productId}, connection );
     }
 
     public createRequest(dialog: Dialog, segments: Segment<any>[], tan?: string) {
