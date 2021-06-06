@@ -30,7 +30,6 @@ export class HttpConnection extends ConnectionConfig implements Connection {
 
     public async send(request: Request): Promise<Response> {
         const {url} = this;
-        console.log(`Sending Request: ${request}`);
         verbose(`Sending Request: ${request}`);
         if (this.debug) {
             verbose(`Parsed Request:\n${request.debugString}`);
@@ -44,7 +43,6 @@ export class HttpConnection extends ConnectionConfig implements Connection {
         }
 
         const responseString = decodeBase64(await httpRequest.text());
-        console.log(`Received Response: ${responseString}`);
         verbose(`Received Response: ${responseString}`);
         const response = new Response(responseString);
         if (this.debug) {
