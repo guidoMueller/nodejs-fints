@@ -1,8 +1,16 @@
 import { option, Options } from "clime";
-import { PinTanClientConfig } from "fints";
+import { PinTanClientConfig, PRODUCT_NAME } from "node-fints";
 import * as YAML from "yamljs";
 
 export class BaseConfig extends Options implements PinTanClientConfig {
+    @option({
+        required: false,
+        flag: "i",
+        description: "Product ID from fints.(opt)",
+        default: PRODUCT_NAME,
+    })
+    public productId: string;
+
     @option({ required: true, flag: "u", description: "Endpoint URL." })
     public url: string;
 
