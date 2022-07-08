@@ -1,5 +1,5 @@
 import { Connection } from "./types";
-import { HICDBS, HIKAZS, HISALS, HITANS, HIUPD, HKEND, HKIDN, HKSYN, HKTAN, HKVVB, Segment } from "./segments";
+import { HKIDN, HKVVB, HKSYN, HKTAN, HKEND, HISALS, HIKAZS, HICDBS, HIUPD, HITANS, Segment } from "./segments";
 import { Request } from "./request";
 import { Response } from "./response";
 import { TanMethod } from "./tan-method";
@@ -7,6 +7,7 @@ import { escapeFinTS } from "./utils";
 import { ResponseError } from "./errors/response-error";
 import { TanRequiredError } from "./errors/tan-required-error";
 import { HITAN } from "./segments/hitan";
+import { PRODUCT_NAME } from "./constants";
 
 /**
  * Properties passed to configure a `Dialog`.
@@ -15,7 +16,7 @@ export class DialogConfig {
     /**
      * The product ID that was assigned by ZKA
      */
-    public productId = "fints";
+    public productId = PRODUCT_NAME;
     /**
      * The banks identification number (Bankleitzahl).
      */
@@ -99,13 +100,13 @@ export class Dialog extends DialogConfig {
      * @return The response as received by the server.
      */
     public async sync() {
-        const {blz, name, pin, systemId, dialogId, msgNo} = this;
+        const { blz, name, pin, systemId, dialogId, msgNo } = this;
         const segments = [
-            new HKIDN({segNo: 3, blz, name, systemId: "0"}),
-            new HKVVB({segNo: 4, productId: this.productId, lang: 0}),
-            new HKSYN({segNo: 5}),
+            new HKIDN({ segNo: 3, blz, name, systemId: "0" }),
+            new HKVVB({ segNo: 4, productId: this.productId, lang: 0 }),
+            new HKSYN({ segNo: 5 }),
         ];
-        const response = await this.send(new Request({blz, name, pin, systemId, dialogId, msgNo, segments}));
+        const response = await this.send(new Request({ blz, name, pin, systemId, dialogId, msgNo, segments }));
         this.systemId = escapeFinTS(response.systemId);
         this.dialogId = response.dialogId;
         this.hisalsVersion = response.segmentMaxVersion(HISALS);
@@ -124,16 +125,16 @@ export class Dialog extends DialogConfig {
      * The dialog is ready for performing custom requests afterwards.
      */
     public async init(): Promise<Response> {
-        const {blz, name, pin, dialogId, msgNo, tanMethods} = this;
+        const { blz, name, pin, dialogId, msgNo, tanMethods } = this;
         const segments: Segment<any>[] = [
-            new HKIDN({segNo: 3, blz, name, systemId: "0"}),
-            new HKVVB({segNo: 4, productId: this.productId, lang: 0}),
+            new HKIDN({ segNo: 3, blz, name, systemId: "0" }),
+            new HKVVB({ segNo: 4, productId: this.productId, lang: 0 }),
         ];
         if (this.hktanVersion >= 6) {
-            segments.push(new HKTAN({segNo: 5, version: 6, process: "4"}));
+            segments.push(new HKTAN({ segNo: 5, version: 6, process: "4" }));
         }
         const response: Response = await this.send(
-                new Request({blz, name, pin, systemId: "0", dialogId, msgNo, segments, tanMethods}),
+            new Request({ blz, name, pin, systemId: "0", dialogId, msgNo, segments, tanMethods }),
         );
         this.dialogId = response.dialogId;
         return response;
@@ -143,11 +144,9 @@ export class Dialog extends DialogConfig {
      * End the currently open request.
      */
     public async end() {
-        const {blz, name, pin, systemId, dialogId, msgNo} = this;
-        const segments = [
-            new HKEND({segNo: 3, dialogId}),
-        ];
-        await this.send(new Request({blz, name, pin, systemId, dialogId, msgNo, segments}));
+        const { blz, name, pin, systemId, dialogId, msgNo } = this;
+        const segments = [new HKEND({ segNo: 3, dialogId })];
+        await this.send(new Request({ blz, name, pin, systemId, dialogId, msgNo, segments }));
         this.dialogId = "0";
         this.msgNo = 1;
     }
@@ -170,11 +169,13 @@ export class Dialog extends DialogConfig {
         }
         if (response.returnValues().has("0030")) {
             const hitan = response.findSegment(HITAN);
-            throw new TanRequiredError(response.returnValues().get("0030").message,
-                                       hitan.transactionReference,
-                                       hitan.challengeText,
-                                       hitan.challengeMedia,
-                                       this);
+            throw new TanRequiredError(
+                response.returnValues().get("0030").message,
+                hitan.transactionReference,
+                hitan.challengeText,
+                hitan.challengeMedia,
+                this,
+            );
         }
         this.msgNo++;
         return response;
